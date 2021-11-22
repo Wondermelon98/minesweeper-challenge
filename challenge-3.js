@@ -12,8 +12,6 @@
 //   return prices[prices.length - 1] - prices[0];
 // };
 
-const highestMargin = (prices) => {
-  return Math.max(...prices) - Math.min(...prices);
-};
+const highestMargin = prices => Math.max(...prices) - Math.min(...prices);
 
 console.log(highestMargin([1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 9, 10, 11]));

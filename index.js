@@ -1,5 +1,11 @@
 let buttonGen = document.querySelector("#generate");
+let submitCoords = document.querySelector("#submit");
 let square = document.querySelector(".square");
+let xForm = document.querySelector("#x");
+let yForm = document.querySelector("#y");
+let xCoord = +xForm.value;
+let yCoord = +yForm.value;
+let selectedCoords = [xCoord, yCoord];
 
 let coords = [];
 let bombs = [];
@@ -7,11 +13,10 @@ let bombs = [];
 const generateBombs = () => {
   while (bombs.length < 15) {
     let bomb = Math.floor(Math.random() * 101);
-    if (bombs.includes(bomb)) {
-      return;
-    } else bombs.push(bomb);
+    if (!bombs.includes(bomb)) {
+      bombs.push(bomb);
+    }
   }
-  console.log(bombs);
 };
 
 const generateGrid = () => {
@@ -31,6 +36,7 @@ const generateGrid = () => {
   }
   generateBombs();
   console.log(coords);
+  console.log(bombs);
 };
 
 buttonGen.addEventListener("click", generateGrid);
@@ -48,3 +54,40 @@ for (let i = x - 1; i <= x + 1; i++) {
     }
   }
 }
+
+submitCoords.addEventListener("click", () => {
+  bombCheck();
+});
+
+const bombCheck = () => {
+  // finding square of coords
+  let squareOfCoords = coords.map((coord, index) => {
+    if (JSON.stringify(coord) === JSON.stringify(selectedCoords)) {
+      return index + 1;
+    }
+  });
+  console.log(`the corresponding square is ${squareOfCoords}`);
+  let surroundingSquares = [
+    squareOfCoords - 11,
+    squareOfCoords - 10,
+    squareOfCoords - 9,
+    squareOfCoords - 1,
+    squareOfCoords + 1,
+    squareOfCoords + 9,
+    squareOfCoords + 11,
+    squareOfCoords + 12,
+  ];
+  console.log(
+    `the surrounding squares of your square is ${surroundingSquares}`
+  );
+  console.log(
+    surroundingSquares.map(
+      (surrSquare) => bombs.filter((bomb) => surrSquare === bomb).length
+    )
+  );
+};
+
+// at square 13, (2, 9) we want to check squares (bombs[square - 1]):
+// 2, 3, 4
+// 12, 14
+// 22, 23, 24
